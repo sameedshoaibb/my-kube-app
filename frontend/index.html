@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FastAPI + MongoDB App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: 'Inter', sans-serif;
+      background-color: #f2f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      padding: 2rem 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #333;
+      margin-top: 0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    input {
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: border-color 0.2s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+
+    button {
+      padding: 0.75rem;
+      font-size: 1rem;
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    p {
+      font-size: 0.95rem;
+      text-align: center;
+      font-weight: 500;
+      color: #444;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 1.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>User Manager</h1>
+
+    <!-- Create User -->
+    <form id="user-form">
+      <input type="text" id="name" placeholder="Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <button type="submit">Create User</button>
+    </form>
+    <p id="create-result"></p>
+
+    <hr>
+
+    <!-- Get User -->
+    <h2>Get User</h2>
+    <form id="get-user-form">
+      <input type="text" id="get-user-id" placeholder="User ID (MongoDB)" required />
+      <button type="submit">Fetch User</button>
+    </form>
+    <p id="get-result"></p>
+
+    <hr>
+
+    <!-- Delete User -->
+    <h2>Delete User</h2>
+    <form id="delete-user-form">
+      <input type="text" id="delete-user-id" placeholder="User ID (MongoDB)" required />
+      <button type="submit">Delete User</button>
+    </form>
+    <p id="delete-result"></p>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:8000';
+
+    // Create user
+    document.getElementById('user-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      const res = await fetch(`${API_BASE}/users/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email })
+      });
+
+      const data = await res.json();
+      document.getElementById('create-result').textContent = data.id
+        ? `✅ User created with ID: ${data.id}`
+        : `❌ ${data.detail || 'Failed to create user'}`;
+    });
+
+    // Get user
+    document.getElementById('get-user-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const userId = document.getElementById('get-user-id').value;
+      const res = await fetch(`${API_BASE}/users/${userId}`);
+      const output = document.getElementById('get-result');
+
+      if (res.ok) {
+        const data = await res.json();
+        output.innerHTML = `
+          🧾 <strong>Name:</strong> ${data.name}<br>
+          📧 <strong>Email:</strong> ${data.email}<br>
+          🆔 <strong>ID:</strong> ${data.id}
+        `;
+      } else {
+        const err = await res.json();
+        output.textContent = `❌ ${err.detail}`;
+      }
+    });
+
+    // Delete user
+    document.getElementById('delete-user-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const userId = document.getElementById('delete-user-id').value;
+      const res = await fetch(`${API_BASE}/users/${userId}`, {
+        method: 'DELETE'
+      });
+
+      const data = await res.json();
+      document.getElementById('delete-result').textContent = res.ok
+        ? `🗑️ ${data.message}`
+        : `❌ ${data.detail}`;
+    });
+  </script>
+</body>
+</html>
