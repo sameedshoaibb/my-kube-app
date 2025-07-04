@@ -1,0 +1,67 @@
+services:
+  frontend:
+    build:
+      context: frontend
+    ports:
+      - "8080:80"
+    networks:
+      - mynet
+    container_name: frontend
+
+  backend:
+    build:
+      context: backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+    networks:
+      - mynet
+    container_name: backend
+
+  consumer:  # ✅ NEW SERVICE
+    build:
+      context: backend
+    command: ["python", "consumer.py"]
+    container_name: consumer
+    depends_on:
+      - rabbitmq
+    networks:
+      - mynet
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - mynet
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - mynet
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - mynet
+
+volumes:
+  mongo_data:
+    driver: local
+
+networks:
+  mynet:
+    driver: bridge
