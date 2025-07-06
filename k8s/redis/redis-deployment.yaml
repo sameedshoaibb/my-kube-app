@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: myapp-dev             
+  labels:
+    app: redis
+    tier: web
+    environment: dev
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+      tier: web
+      environment: dev
+  template:
+    metadata:
+      labels:
+        app: redis
+        tier: web
+        environment: dev
+    spec:
+      containers:
+        - image: redis:7
+          name: redis
+          ports:
+            - containerPort: 6379
+              protocol: TCP
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+      restartPolicy: Always

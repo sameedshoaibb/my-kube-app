@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: myapp-dev
+  labels:
+    app: consumer
+    tier: web
+    environment: dev
+  name: consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer
+      tier: web
+      environment: dev
+  template:
+    metadata:
+      labels:
+        app: consumer
+        tier: web
+        environment: dev
+    spec:
+      containers:
+        - args:
+            - python
+            - consumer.py
+          env:
+            - name: RABBITMQ_URL
+              value: amqp://guest:guest@rabbitmq:5672/
+          image: aks-backend:v1.0.0
+          name: consumer
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+      restartPolicy: Always
