@@ -17,3 +17,4 @@ helm install monitoring prometheus-community/kube-prometheus-stack -n monitoring
 kubectl port-forward svc/monitoring-kube-prometheus-prometheus -n monitoring 9090
 kubectl port-forward svc/monitoring-grafana -n monitoring 3000:80
 
+# Read me
