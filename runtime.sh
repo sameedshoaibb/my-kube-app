@@ -18,3 +18,6 @@ kubectl port-forward svc/monitoring-kube-prometheus-prometheus -n monitoring 909
 kubectl port-forward svc/monitoring-grafana -n monitoring 3000:80
 
 # Read me
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
