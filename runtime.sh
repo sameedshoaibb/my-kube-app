@@ -21,3 +21,22 @@ kubectl port-forward svc/monitoring-grafana -n monitoring 3000:80
 
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
+
+helm install loki grafana/loki -f values.yaml
+
+# Loki
+kubectl port-forward --namespace monitoring svc/loki-gateway 3100:80 &
+http://loki-gateway.monitoring.svc.cluster.local/
+
+helm upgrade --install loki grafana/loki \
+  --namespace monitoring \
+  -f values.yaml
+
+http://loki-gateway.monitoring.svc.cluster.local/
+
+kubectl port-forward --namespace monitoring svc/loki 3101:3100 &
+kubectl --namespace monitoring port-forward daemonset/promtail 3101
+
+helm install promtail grafana/promtail \
+  --namespace monitoring \
+  --set loki.serviceName=loki
