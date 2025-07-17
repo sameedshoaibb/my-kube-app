@@ -1,0 +1,57 @@
+# Deployment strategies:
+# There are 1: Recreate 2: Rolling(default) 3: Blue/Green 4: Canary
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recreate-demo
+spec:
+  replicas: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: recreate
+  template:
+    metadata:
+      labels:
+        app: recreate
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.21
+
+# Test command: kubectl set image deployment/recreate-demo web=nginx:404
+# kubectl rollout status deployment/recreate-demo
+# kubectl rollout undo deployment recreate-demo
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rolling-demo
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 2
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: rolling
+  template:
+    metadata:
+      labels:
+        app: rolling
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.21
+
+# Test command: kubectl set image deployment/rolling-demo web=nginx:404
+# replicas: 3
+# maxSurge: 1 → allows 1 extra pod
+# maxUnavailable: 1 → allows 1 pod to be taken down during rollout
+# Means during the deployment, 2 pods will be created with a new image while 2 will remain there in case of failure.
