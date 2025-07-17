@@ -1,0 +1,46 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 100000
+globalDefault: false
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: low-priority
+value: 1000
+globalDefault: true
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: low-mem-pod
+spec:
+  priorityClassName: low-priority
+  containers:
+  - name: low
+    image: busybox
+    command: ["sh", "-c", "x=; while true; do x=$x$x$x$x; done"]
+    resources:
+      requests:
+        memory: "12Mi"
+      limits:
+        memory: "12Mi"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: high-mem-pod
+spec:
+  priorityClassName: high-priority
+  containers:
+  - name: high
+    image: nginx
+    resources:
+      requests:
+        memory: "56Mi"
+      limits:
+        memory: "56Mi"
+

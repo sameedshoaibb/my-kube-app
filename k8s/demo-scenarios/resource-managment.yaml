@@ -1,0 +1,48 @@
+# QoS: 
+# Guaranteed: requests == limits
+# Burstable: request ≠ limit
+# BestEffort: No requests or limits specified
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: qos-guaranteed
+  namespace: demo
+spec:
+  containers:
+  - name: app
+    image: nginx
+    resources:
+      requests:
+        cpu: "200m"
+        memory: "100Mi"
+      limits:
+        cpu: "200m"
+        memory: "100Mi"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: qos-burstable
+  namespace: demo
+spec:
+  containers:
+  - name: app
+    image: nginx
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "64Mi"
+      limits:
+        cpu: "300m"
+        memory: "128Mi"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: qos-besteffort
+  namespace: demo
+spec:
+  containers:
+  - name: app
+    image: nginx

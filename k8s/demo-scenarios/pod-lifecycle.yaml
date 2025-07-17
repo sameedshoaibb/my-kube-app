@@ -1,0 +1,26 @@
+# Pod lifecyvcle means from creation to termination. The flows is from pending, running, succeed, termination.
+# By default the restart policy is always.
+# After the restart, the container is recreated, meaning the changes are reverted.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lifecycle-demo
+  namespace: demo
+spec:
+  containers:
+  - name: web
+    image: nginx
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 5
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      failureThreshold: 3
+
