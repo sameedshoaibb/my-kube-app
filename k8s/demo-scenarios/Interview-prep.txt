@@ -1,0 +1,428 @@
+Q: Kubernetes cluster ka architecture explain karo
+Kubernetes architecture do parts mein divide hota hai:
+    Control Plane → cluster ke decisions yahan liye jaate hain (e.g., scheduling, state management)
+    Worker Nodes → yahan pe actual pods chalte hain
+
+Control Plane Components:
+    kube-apiserver — cluster ka entry point
+    etcd — cluster ka database
+    scheduler — pods ko nodes pe assign karta hai
+    controller-manager — state monitoring karta hai
+
+Worker Node Components:
+    kubelet — instructions ko execute karta hai
+    kube-proxy — networking rules manage karta hai
+    container runtime — like Docker, containers ko chalata hai
+
+🔹 2. Control Plane aur Data Plane mein kya farq hota hai?
+    Control Plane: Kubernetes ka brain — cluster ko manage karta hai (API server, scheduler, etcd).
+    Data Plane (Worker Nodes): Jahan actual application pods run karte hain.    
+
+🔹 3. API Server ka kya role hai Kubernetes mein?
+    kube-apiserver cluster ka main entry point hai. Ye har request ko accept karta hai (e.g., kubectl, CI/CD) aur cluster ke components ke saath communicate karta hai.
+
+🔹 4. Scheduler kya karta hai Kubernetes mein?
+    Scheduler decide karta hai ke konsa pod kis node pe chalega — based on resource availability, affinity, taints, etc.
+
+🔹 5. Kubelet aur Kube-proxy mein kya difference hai?
+    kubelet: Node ka agent hai jo pod configuration follow karta hai.
+    kube-proxy: Node ke networking rules set karta hai (e.g., service-to-pod routing).
+
+🔹 6. Etcd kya hai? Kya ye critical hai?
+    etcd aik distributed key-value database hai jahan cluster ka sara config/data stored hota hai.
+    Yes, ye critical hota hai — agar down ho jaye to cluster manage nahi ho pata.
+🔹 7. Controller Manager ka kya role hai?
+    Controller Manager cluster ke state ko maintain karta hai. Ye controllers ko manage karta hai jo pods, replica sets, etc. ki lifecycle ko monitor karte hain.   
+🔹 8. K8s mein Pod kya hai?
+    Pod Kubernetes ka smallest deployable unit hai. Ye ek ya zyada containers ko group karta hai jo same network namespace share karte hain. Pods ko scale kiya ja sakta hai aur ye ephemeral hote hain.
+🔹 9. ReplicaSet aur Deployment mein kya difference hai?
+    ReplicaSet: Ensure karta hai ke fixed number of pod replicas run ho rahe hoon.
+    Deployment: Ye ReplicaSet ko manage karta hai aur rolling updates, rollbacks jaise features provide karta hai.      
+
+🔹 10. Service kya hai Kubernetes mein?
+    Service ek abstraction hai jo pods ke group ko expose karta hai. Ye stable endpoint provide karta hai taake clients easily pods se connect kar saken, chahe pods ka lifecycle change ho.
+🔹 7. Kubernetes pod crash ho jaye to kya hota hai? 
+    Agar pod crash ho jaye aur restartPolicy: Always ho, to Kubernetes automatically us pod ko dobara start kar deta hai — mostly via ReplicaSet.
+
+
+🔹 9. Kubernetes mein container kaise start hota hai?
+    User kubectl se deploy karta hai.
+    API Server request leta hai.
+    Scheduler node choose karta hai.
+    Kubelet pod config ke mutabiq container ko start karta hai via runtime (e.g., containerd).
+
+🔹 11. Kya tumne rolling update implement kiya hai? Kaise rollback karte ho?
+    Haan, Kubernetes mein Deployment rolling updates default strategy hai.
+    Update ke baad agar naya version fail ho jaye to rollback command hoti hai:
+    kubectl rollout undo deployment my-app
+
+🔹 12. Pod scheduling kaise hoti hai? Agar node full ho to kya hoga?
+    Scheduler resource requests (CPU, memory), taints, affinity dekh ke node select karta hai.
+    Agar koi node suitable na ho to pod Pending state mein rahega.
+    Cluster Autoscaler ho to new node add ho sakti hai.
+
+🔹 13. Kya tum node affinity ya taints/tolerations ka use karte ho?
+    Haan.
+    Node Affinity se hum pod ko specific node types pe schedule karte hain.
+    Taints/Tolerations se hum restrict karte hain ke sirf specific pods hi node pe jaayein.
+
+🔹 14. Kya control plane down ho jaye to tumhari app affected hoti hai?
+    Nahi.
+    Running pods aur services continue karte hain kaam karna, lekin koi naya deployment ya scaling nahi ho sakta jab tak control plane wapas na aaye.
+
+🔹 15. Kya ek pod directly doosre pod se baat kar sakta hai?
+    Haan, ek pod doosre pod se ClusterIP ke through baat kar sakta hai — ya phir service name se DNS ke zariye.
+
+🔹 16. Kya Kubernetes high availability support karta hai?
+    Bilkul. HA setup mein:
+    Multiple masters (control plane nodes) hote hain
+    Load balancer hota hai API server ke aage
+    Etcd cluster bhi HA mode mein chal sakta hai
+
+🔹 17. Production mein etcd ka backup kaise lete ho?
+    etcdctl snapshot save command se backup lete hain.
+    Regular intervals pe backup schedule karte hain.
+    Backup ko secure location pe store karte hain.
+    Restore ke liye etcdctl snapshot restore command use karte hain.
+
+🔹 18. Kya tumne custom controllers ya operators banaye hain?
+
+🔹 19. API server pe high load aajaye to kya troubleshooting steps loge?
+    Logs check karenge kube-apiserver ke.
+    Resource usage monitor karenge (CPU, memory).
+    API server configuration check karenge (e.g., request limits).
+    Load balancer health check karenge agar use ho raha hai.
+    Horizontal Pod Autoscaler use karte hain to scale API server pods.
+
+🔹 20. Kubernetes kaise handle karta hai desired vs actual state?
+    Kubernetes desired state ko define karta hai YAML manifests mein.
+    Control Plane continuously actual state ko monitor karta hai.
+    Agar actual state desired state se match nahi karti, to controllers (e.g., ReplicaSet, Deployment) automatically changes apply karte hain taake desired state achieve ho sake.
+    Ye reconciliation loop kehlata hai — ye ensure karta hai ke cluster hamesha desired state mein rahe.    
+
+🔹 21. Agar pod bar bar crash ho raha ho to kaise debug karoge?
+    kubectl describe pod → events check karunga
+    kubectl logs <pod> → error trace karunga
+    Agar image issue hai → correct kar ke redeploy
+    Agar liveness/readiness probe fail ho raha hai → unki tuning check karunga
+
+🔹 22. Agar tumhara HPA scale nahi kar raha to kya check karoge?
+    metrics-server installed hai ya nahi
+    resources.requests.cpu defined hai ya nahi
+    kubectl describe hpa se reason check karunga
+
+🔹 23. Deployment ke dauran traffic cut-off na ho, aisa kaise ensure karte ho?
+    Rolling updates use karte hain.
+    Readiness probes set karte hain taake naya pod ready ho jaye tab tak traffic na aaye.
+    Max surge aur max unavailable parameters set karte hain taake downtime minimize ho.
+
+🔹 24. Agar metrics-server down ho jaye to kya impact hoga?
+    Agar metrics-server down ho jaye to Horizontal Pod Autoscaler scale nahi kar payega.
+    Existing pods ka scale effect nahi hoga, lekin naye scale requests fail ho sakte hain.
+    Metrics-server ko restart ya troubleshoot karna padega taake scaling wapas se kaam kare.
+
+🔹 25. Kya tumne multiple clusters handle kiye hain? Kya tools use kiye?
+    Haan. Multiple clusters (dev/stage/prod) manage kiye hain using:
+    kubectl config use-context
+    ArgoCD for visibility and management
+
+🔹 26. Tumne kab last time Kubernetes upgrade kiya? Kya challenges aye?
+    Recently 1.26 se 1.28 upgrade kiya. Challenge tha custom admission webhook ka compatibility. Pehle staging mein test kiya, phir production upgrade kiya with node draining.
+
+🔹 28. Scaling aur cost optimization kaise manage karte ho?
+    HPA + Cluster Autoscaler use karta hoon
+    requests/limits optimize karta hoon
+    Spot instances ya node groups use karte hain dev workloads ke liye
+
+🔹 29. Kubernetes security best practices kya follow karte ho?
+    RBAC use karta hoon for access control
+    Network policies define karta hoon for pod communication
+    Secrets ko encrypt karta hoon
+    Pod security policies ya OPA Gatekeeper use karta hoon for compliance
+
+🔹 30. Kaunsa ek problem tha jo tumne solve kiya using Kubernetes?
+    Ek baar app bar bar crash ho rahi thi — debug karke pata chala liveness probe aggressively tuned thi. Usko adjust karke app stable ho gayi. Us incident ke baad team ne probe tuning SOP banaya.
+
+🔹 31. kubectl kaam kaise karta hai internally?
+    kubectl ek CLI tool hai jo API server se baat karta hai.
+    Jab tum command chalate ho, to:
+    kubectl config file (~/.kube/config) se cluster details leta hai
+    API server ko HTTPS request bhejta hai
+    Response le ke output show karta hai
+
+🔹 32. Etcd ki performance aur reliability ensure karne ke best practices kya hain?
+    Etcd ko dedicated SSD disk pe run karo
+    Regular snapshots and off-site backups
+    Minimum 3-node HA etcd cluster
+    Encrypt etcd data using TLS & encryption-at-rest
+
+🔹 33. Tum apne cluster ko production-grade secure kaise banate ho?
+    RBAC strictly apply karta hoon
+    NetworkPolicies set karta hoon
+    Secrets ko encryption-at-rest ke saath store karta hoon
+    API server pe audit logging enable karta hoon
+    Pod Security Admission (PSA) use karta hoon: restricted mode
+
+🔹 34. Difference between Master Node and Control Plane?
+    Technically same cheez thi pehle, lekin ab "Control Plane" ka term use hota hai:
+    Master Node = physical/virtual node
+    Control Plane = API server, etcd, scheduler, etc.
+
+🔹 36. Kubernetes components kaise interact karte hain ek pod banane ke process mein?
+    kubectl → API Server
+    API Server → Etcd (store state)
+    Scheduler → pod ko node assign karta hai
+    Kubelet → assigned node pe pod create karta hai using runtime
+    Kube-proxy → networking rules set karta hai
+
+🔹 37. Tum etcd ka snapshot kaise automate karte ho?
+    CronJob + etcdctl snapshot save
+    Backups ko S3 ya NFS pe push karta hoon
+
+🔹 38. Kubernetes audit logs kya hote hain? Kaise enable karte hain?
+    Audit logs har API request ka record rakhte hain (who did what and when).
+    Enable via --audit-policy-file flag on API server.
+
+🔹 39. Service discovery Kubernetes mein kaise hoti hai?
+    Har service ka DNS name banta hai (e.g., my-service.default.svc.cluster.local).
+    Pods internal DNS se service name se doosre services ko locate kar sakte hain.
+
+🔹 40. DNS resolution pod level pe kaise kaam karta hai?
+    Kubernetes DNS add-on (CoreDNS) service discovery ke liye use hota hai.
+    Pods mein DNS queries CoreDNS ko forward hoti hain, jo service names ko IPs mein resolve karta hai.
+    Agar service create hoti hai, to DNS records automatically update hote hain.
+
+🔹 41. NodePort vs LoadBalancer vs Ingress — difference?
+| Type         | Use Case                                    |
+| ------------ | ------------------------------------------- |
+| NodePort     | Access via `<NodeIP>:<Port>`                |
+| LoadBalancer | External LB (cloud provider)                |
+| Ingress      | Route HTTP(S) traffic using host/path rules |
+
+🔹 42. Tumne Ingress Controller kaun sa use kiya hai? Kyu?
+    Mostly NGINX Ingress Controller use karta hoon:
+    Simple setup
+    Helm chart available
+    TLS support with cert-manager
+    Rewrite rules support
+
+🔹 43. ClusterIP service ka kya scope hota hai?
+    ClusterIP sirf cluster ke andar accessible hota hai — external clients access nahi kar sakte.
+
+🔹 44. Agar pod DNS resolve nahi kar raha, to kya troubleshoot steps loge?
+    Pod se nslookup test
+    DNS pod (coredns) logs check
+    /etc/reslv.conf validate
+    NetworkPolicy ya iptables rules check
+
+🔹 45. External traffic ko app tak kaise laate ho cluster ke andar?
+    Via Ingress
+    Or via LoadBalancer service (cloud providers)
+    TLS terminate karta hoon Ingress Controller pe with cert-manager
+
+🔹 46. Pod lifecycle ke stages kya hain?
+    Pending
+    ContainerCreating
+    Running
+    Succeeded or Failed
+    Terminating
+
+🔹 47. CrashLoopBackOff vs ImagePullBackOff?
+    CrashLoopBackOff: Container start hota hai, phir crash karta hai bar bar
+    ImagePullBackOff: Image download nahi ho rahi (wrong name, unauthenticated, etc.)
+
+🔹 48. Tum liveness probe kab use karte ho, aur readiness probe kab?
+    Liveness Probe: Check karta hai agar container healthy hai ya nahi. Agar fail ho jaye, to container restart hota hai.
+    Readiness Probe: Check karta hai agar pod traffic accept karne ke liye ready hai ya nahi. Agar fail ho, to service traffic us pod ko nahi bhejegi.
+
+🔹 49. Pod disruption budget ka use case kya hota hai?
+    Pod Disruption Budget (PDB) ensure karta hai ki minimum number of pods available rahein during voluntary disruptions (e.g., node maintenance). Ye critical applications ke liye downtime ko minimize karta hai.
+
+🔹 50. Init container kis purpose ke liye use karte ho?
+    Init containers special containers hote hain jo pod ke main containers se pehle run hote hain. Ye tasks perform karte hain jaise configuration setup, dependencies download, ya database migrations. Ye ensure karte hain ki main containers ke liye environment ready ho.
+
+🔹 51. kubectl top output interpret kaise karte ho?
+    kubectl top pod show karta hai:
+    Real-time CPU (millicores) and Memory (MiB) usage
+    Main check karta hoon:
+    Pod limit ke kareeb to nahi jaa raha
+    Repeated spikes to nahi ho rahe
+
+🔹 52. Agar pod memory leak kar raha ho, kaise detect karoge?
+    kubectl top se gradual memory growth dekhta hoon
+    Prometheus memory usage chart
+
+🔹 1. How various components of Kubernetes interact when you run kubectl apply (Pod)
+    Tum kubectl apply -f pod.yaml chalaate ho.
+
+    kubectl → request bhejta hai API Server ko.
+    API Server config ko validate karke etcd mein save karta hai (desired state).
+    Scheduler pod ke liye best node select karta hai.
+    Kubelet us node pe pod create karta hai.
+    Container runtime (e.g., containerd) container run karta hai.
+    Pod DNS register hoti hai (CoreDNS).
+
+🔹 2. What is the purpose of Services in Kubernetes?
+    Service Kubernetes mein ek stable network identity deta hai pods ko.
+    Pods ka IP change hota rehta hai.
+    Service ka ek constant virtual IP hota hai.
+    Wo load balance karta hai multiple pod instances ke darmiyan.
+
+🔹 3. Why is hardcoding Pod IP communication a bad practice?
+    Pod ka IP dynamically change hota hai (restart pe naya IP milta hai).
+    Agar tum hardcode kar doge:
+    Communication break ho sakti hai
+    Application unreliable ban jaati hai
+
+🔹 4. What are the types of Services in Kubernetes?
+    ClusterIP: Default, sirf cluster ke andar accessible hota hai.
+    NodePort: External access ke liye `<NodeIP>:<Port>` use karta hai.
+    LoadBalancer: Cloud provider ke saath integration karta hai, external load balancer create karta hai.
+    ExternalName: DNS name ko service ke saath map karta hai.
+
+🔹 5. What are labels and selectors in Kubernetes?
+    Labels: Key-value pair hote hain jo resources (pods, services) ko tag karte hain.
+    Example: app: frontend
+
+    Selectors: Use hote hain labels match karne ke liye.
+    E.g., Service select karta hai pods jinke paas app=frontend label ho.
+
+🔹 6. What would you recommend: NodePort or LoadBalancer type service and why?
+    Production: LoadBalancer use karna better hai:
+    Auto-managed by cloud
+    Stable DNS/IP
+
+    NodePort: thik hai testing ya POC ke liye
+    Manual IP + port access
+    Load balancing external tools se karna padta hai
+
+🔹 7. How Kubernetes Services are related to Kube-Proxy?
+    Kube-Proxy har node pe run karta hai
+    Ye iptables/ipvs rules create karta hai
+    Jab service hit hoti hai, to Kube-Proxy traffic ko correct pod pe route karta hai
+
+🔹 8. What is the disadvantage of LoadBalancer service type?
+    Cloud dependent — works only in cloud environments
+    Each service → new LB, which means high cost
+    Limited configuration options compared to Ingress
+
+🔹 9. What is a Headless Service in Kubernetes and when did you use it?
+    Headless Service bina ClusterIP ke hota hai.
+    Use case: Direct pod access chahiye (e.g., StatefulSets, databases).
+    DNS records create karta hai for each pod, taake direct pod IPs se connect ho sakein.
+
+🔹 10. Can a Pod access Service in different namespace? If Yes, how?
+Haan, pod dusre namespace ke service ko access kar sakta hai using FQDN:
+http://<service-name>.<namespace>.svc.cluster.local
+
+🔹 11. Explain how you can restrict access to DB pod to only one app in the namespace?
+Iske liye tum NetworkPolicy use karoge:
+kind: NetworkPolicy
+spec:
+  podSelector:
+    matchLabels:
+      app: database
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: backend-app
+Ye policy sirf backend-app ko database pod tak access allow karegi.
+
+🔹 12. Explain the deployment strategy that you follow in your organization.
+Mostly hum RollingUpdate strategy use karte hain:
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: 1
+
+
+🔹 13. Explain the rollback strategy that you follow in your organization.
+Agar deployment fail ho jaye ya issues aaye, to hum rollback karte hain:
+kubectl rollout undo deployment my-app
+Ye previous stable version pe wapas le aata hai.    
+
+🔹 14. Design a solution to avoid rollbacks.
+    Automated tests (unit, integration) run karte hain before deployment.
+    Canary deployments use karte hain taake naya version ko limited traffic mile.
+    Monitoring and alerting setup karte hain taake issues jaldi detect ho sakein.
+    Blue-Green deployments consider karte hain for zero-downtime rollouts.
+
+
+🔹 16. Explain the role of CoreDNS in Kubernetes.
+CoreDNS Kubernetes ka DNS server hai jo service discovery aur pod-to-pod communication ke liye use hota hai.
+Ye service names ko IPs mein resolve karta hai aur DNS queries handle karta hai.   
+
+🔹 17. A DevOps engineer tainted a node as "NoSchedule". Can you still schedule a pod?
+Haan, agar pod mein toleration defined ho to:
+
+🔹 18. Pod is stuck in CrashLoopBackOff, What steps will you take?
+    kubectl describe pod <pod-name> → events aur status check karunga
+    kubectl logs <pod-name> → error messages dekhunga
+    Agar image issue hai to Dockerfile ya image registry check karunga
+    Agar liveness/readiness probe fail ho raha hai to unki configuration check karunga
+    Agar resource limits exceed ho rahe hain to pod resources adjust karunga    
+
+🔹 19. What is the difference between Liveness and Readiness Probes?
+    Liveness Probe: Check karta hai agar container healthy hai ya nahi. Agar fail ho jaye, to container restart hota hai.
+    Readiness Probe: Check karta hai agar pod traffic accept karne ke liye ready hai ya nahi. Agar fail ho, to service traffic us pod ko nahi bhejegi.  
+
+🔹 20. Explain the difference between Ingress and LoadBalancer service type.| Feature        | Ingress                           | LoadBalancer                  |
+| -------------- | --------------------------------- | ----------------------------- |
+| Works for      | **Multiple services** via routing | One service per LB            |
+| Cost-effective | ✅ (1 IP, many apps)               | ❌ (1 LB = 1 service = \$\$\$) |
+| TLS Support    | Yes, with cert-manager            | Yes                           |
+| Rules support  | Host/path-based routing           | Not flexible                  |
+| Use Case       | HTTP(S) traffic routing           | External access to service    |
+
+🔹 21. Your app works with ClusterIP but fails with Ingress. How do you troubleshoot it?
+    Check Ingress Controller logs (e.g., NGINX)
+    Ensure Ingress resource is correctly defined
+    Validate DNS resolution for Ingress hostname
+    Check if Ingress rules match service ports
+    Verify TLS certificates if using HTTPS
+    Use `kubectl describe ingress <ingress-name>` to see events and errors  
+
+
+🔹 22. Why do I need to setup Ingress controller after creating ingress?
+    IIngress resource sirf rules define karta hai, lekin usko serve karne ke liye Ingress Controller zaroori hota hai (e.g., NGINX, Traefik).
+    Without controller:
+    Ingress rules exist, but no component is actually handling traffic
+    You’ll get “404 Not Found” or no response
+
+🔹 23. We have an in-house load balancer. Can we use Ingress with our load balancer?
+    Haan, tum custom Ingress Controller bana sakte ho jo tumhare in-house load balancer ke saath integrate ho.
+    Ye controller Ingress rules ko handle karega aur traffic ko tumhare load balancer tak route karega.
+
+🔹 24. Your Deployment has replicas: 3, but only 1 pod is running. What could be wrong?
+    Pod scheduling issue (node resources insufficient)
+    Pod stuck in CrashLoopBackOff
+    ReplicaSet misconfigured
+    Node tainted and no tolerations defined
+    Check events using `kubectl describe deployment <deployment-name>` for more details
+
+🔹 25. Your pod mounts a ConfigMap, but changes to the ConfigMap are not reflected?
+
+🔹 26. Explain how Node Affinity works and when will you use it?
+    Node Affinity allow karta hai ke tum pod ko specific nodes pe schedule karwa sako — based on node labels.
+    Use case:
+    High memory nodes
+    GPU nodes
+    Region/zonal placement
+
+🔹 27. What is the difference between Node Affinity and Node Label Selector?
+| Feature          | NodeSelector      | NodeAffinity           |
+| ---------------- | ----------------- | ---------------------- |
+| Simpler          | ✅                 | ❌ (More verbose)       |
+| Matching options | Exact only        | In, NotIn, Exists etc. |
+| Recommended?     | Legacy/simple use | ✅ Production-ready     |
+
+
+🔹 28. What is container runtime in Kubernetes?
+    Container runtime wo component hai jo actual container banata aur chalaata hai inside pod.
+    Popular runtimes:
+    containerd (default)
+    CRI-O
+    (Old) Docker (deprecated from v1.24+)
+

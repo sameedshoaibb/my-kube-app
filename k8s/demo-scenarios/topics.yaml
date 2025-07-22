@@ -1,0 +1,198 @@
+Control Plane
+  API Server: Cluster ka "gatekeeper" — sab request isi ke through jaati hai (kubectl bhi)
+  Scheduler: Ye decide karta hai ke kaunsa pod kis node pe chalega
+  Controller Manager: Ye monitor karta hai ke desired state aur actual state match karein
+  Etcd (Database): Cluster ka internal key-value store — saari config yahan store hoti hai
+Worker Nodes (Data Plane)
+  Kubelet: Ye node ka agent hai — API server se instruction leta hai, aur pods chalata hai
+  Container Runtime: Jaise Docker / containerd — containers actually chalata hai
+  Kube-Proxy: Ye network traffic route karta hai pod ke andar/bahar
+
+Cluster ka Kaam Kaise Hota Hai (Step-by-step)?
+Tum kubectl apply -f deployment.yaml karte ho
+
+API Server request ko accept karta hai
+
+Scheduler dekhta hai ke kahan pod ko schedule karna hai
+
+Kubelet use node pe pod create kar deta hai
+
+Agar pod crash ho jaye → controller dobara us pod ko start kar deta hai
+
+Load balancing ke liye Service banayi jaati hai
+
+Autoscaling ke liye HPA use hota hai.
+
+Pod
+
+Node
+
+Cluster
+
+Namespace
+
+Label & Selector
+
+Annotation
+
+Service
+
+ClusterIP
+
+NodePort
+
+LoadBalancer
+
+ExternalName
+
+Deployment
+
+ReplicaSet
+
+StatefulSet
+
+DaemonSet
+
+Job
+
+CronJob
+
+Volume
+
+PersistentVolume (PV)
+
+PersistentVolumeClaim (PVC)
+
+StorageClass
+
+⚙️ Configuration & Management
+ConfigMap
+
+Secret
+
+ServiceAccount
+
+Resource Requests & Limits
+
+Taints and Tolerations
+
+Node Affinity / Pod Affinity
+
+Init Containers
+
+Sidecar Containers
+
+🚦 Networking
+DNS in Kubernetes
+
+Ingress
+
+Ingress Controller (e.g., NGINX, Traefik)
+
+NetworkPolicy
+
+CNI Plugin (e.g., Calico, Flannel)
+
+🔄 Scaling & Autoscaling
+Horizontal Pod Autoscaler (HPA)
+
+Vertical Pod Autoscaler (VPA)
+
+Cluster Autoscaler
+
+Custom Metrics Autoscaler
+
+KEDA (Kubernetes Event-driven Autoscaler)
+
+🛠️ Rollouts & Strategies
+Rolling Update
+
+Recreate Strategy
+
+Canary Deployment
+
+Blue-Green Deployment
+
+Rollback
+
+🩺 Health Checks
+Liveness Probe
+
+Readiness Probe
+
+Startup Probe
+
+🔐 Security
+RBAC (Role-Based Access Control)
+
+Role & ClusterRole
+
+RoleBinding & ClusterRoleBinding
+
+PodSecurityPolicy (deprecated)
+
+Pod Security Admission (PSA)
+
+SecurityContext
+
+NetworkPolicy
+
+OPA / Kyverno / Gatekeeper
+
+📦 Packaging & CI/CD
+Helm (Charts, Repositories, Templates)
+
+Kustomize
+
+GitOps (e.g., ArgoCD, FluxCD)
+
+📊 Observability
+Metrics Server
+
+Prometheus
+
+Grafana
+
+Alertmanager
+
+Logging (Loki, Fluentd, ELK Stack)
+
+🔍 Debugging & Troubleshooting
+kubectl logs
+
+kubectl exec
+
+kubectl describe
+
+kubectl top
+
+Events & CrashLoopBackOff analysis
+
+🔁 Other Useful Concepts
+Pod Disruption Budget (PDB)
+
+Horizontal Scaling vs Vertical Scaling
+
+ReadWriteOnce vs ReadWriteMany storage
+
+Eviction & Node Pressure
+
+Finalizers
+
+Admission Controllers
+
+Custom Resource Definitions (CRD)
+
+Operators
+
+Controller Manager
+
+Scheduler
+
+Etcd
+
+Kubelet
+
+Kube-Proxy
+
+API Server
