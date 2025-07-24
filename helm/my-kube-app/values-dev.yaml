@@ -1,0 +1,20 @@
+environment: dev
+
+frontend:
+  name: frontend
+  tier: web
+  replicas: 1
+  image: frontend
+  tag: v1.0.2
+  imagePullPolicy: IfNotPresent
+  containerPort: 80
+  servicePort: 80
+  serviceType: NodePort
+  nodePort: 31080
+  resources:
+    requests:
+      memory: "28Mi"
+      cpu: "25m"
+    limits:
+      memory: "156Mi"
+      cpu: "150"

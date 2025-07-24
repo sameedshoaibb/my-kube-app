@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.frontend.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.frontend.name }}
+    tier: {{ .Values.frontend.tier }}
+    environment: {{ .Values.environment }}
+spec:
+  replicas: {{ .Values.frontend.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.frontend.name }}
+      tier: {{ .Values.frontend.tier }}
+      environment: {{ .Values.environment }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.frontend.name }}
+        tier: {{ .Values.frontend.tier }}
+        environment: {{ .Values.environment }}
+    spec:
+      containers:
+        - name: {{ .Values.frontend.name }}
+          image: "{{ .Values.frontend.image }}:{{ .Values.frontend.tag }}"
+          imagePullPolicy: {{ .Values.frontend.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.frontend.containerPort }}
+              protocol: TCP
+          resources:
+            requests:
+              memory: "{{ .Values.frontend.resources.requests.memory }}"
+              cpu: "{{ .Values.frontend.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.frontend.resources.limits.memory }}"
+              cpu: "{{ .Values.frontend.resources.limits.cpu }}"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.frontend.containerPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.frontend.containerPort }}
+            initialDelaySeconds: 10
+            periodSeconds: 30
+      restartPolicy: Always

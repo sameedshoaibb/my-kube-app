@@ -19,7 +19,7 @@ services:
       - mynet
     container_name: backend
 
-  consumer:  # ✅ NEW SERVICE
+  consumer:  
     build:
       context: backend
     command: ["python", "consumer.py"]

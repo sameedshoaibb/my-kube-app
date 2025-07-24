@@ -1,0 +1,27 @@
+helm repo add
+helm install 
+helm search
+helm uninstal
+helm repo list
+
+helm create payment (Helmstructure will be created)
+chart.yaml (metadata about the chart)
+values.yaml (default configuration values. Use for customization of the templates)
+templates/ (contains Kubernetes manifest templates)
+
+helm package payment (Chart is created in the current directory)
+helm repo index . (Creates an index.yaml file for the chart repository)
+helm lint payment (Checks the chart for possible issues)
+
+
+# Deploy to dev (default)
+helm install myapp ./myapp --namespace myapp-dev -f values-dev.yaml
+
+# Deploy to prod
+helm install myapp ./myapp --namespace myapp-prod -f values-prod.yaml
+
+# Or upgrade
+helm upgrade myapp ./myapp --namespace myapp-prod -f values-prod.yaml
+
+# To install a helm chart from a repository
+helm install frontend helm/my-kube-app --namespace myapp-dev
