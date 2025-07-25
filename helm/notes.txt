@@ -15,13 +15,17 @@ helm lint payment (Checks the chart for possible issues)
 
 
 # Deploy to dev (default)
-helm install myapp ./myapp --namespace myapp-dev -f values-dev.yaml
+helm template my-kube-app ./ --namespace my-kube-app-dev -f values-dev.yaml  --debug
+helm install my-kube-app ./my-kube-app --namespace my-kube-app-dev -f values-dev.yaml
 
 # Deploy to prod
-helm install myapp ./myapp --namespace myapp-prod -f values-prod.yaml
+helm install my-kube-app ./my-kube-app --namespace my-kube-app-prod -f values-prod.yaml
 
 # Or upgrade
-helm upgrade myapp ./myapp --namespace myapp-prod -f values-prod.yaml
+helm upgrade my-kube-app ./my-kube-app --namespace my-kube-app-prod -f values-prod.yaml
 
 # To install a helm chart from a repository
-helm install frontend helm/my-kube-app --namespace myapp-dev
+helm install frontend helm/my-kube-app --namespace my-kube-app-dev
+
+# To get yaml files for a chart
+helm template my-kube-app ./ --namespace my-kube-app-dev -f values-dev.yaml 

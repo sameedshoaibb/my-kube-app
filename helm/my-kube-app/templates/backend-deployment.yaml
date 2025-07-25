@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.backend.name }}
+  namespace: {{ .Release.Namespace}}
+  labels:
+    app: {{ .Values.backend.name }}
+    tier: {{ .Values.backend.tier}}
+    environment: {{ .Values.environment}}
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.backend.name }}
+      tier: {{ .Values.backend.tier}}
+      environment: {{ .Values.environment}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.backend.name }}
+        tier: {{ .Values.backend.tier}}
+        environment: {{ .Values.environment}}
+    spec:
+      containers:
+        - image: "{{ .Values.backend.image}}:{{ .Values.backend.tag}}" 
+          imagePullPolicy: {{ .Values.backend.imagePullPolicy }}
+          name: {{ .Values.backend.name }}
+          ports:
+            - containerPort: {{ .Values.backend.containerPort }}
+              protocol: TCP
+          resources:
+            requests:
+              memory: "{{ .Values.backend.resources.requests.memory }}"
+              cpu: "{{ .Values.backend.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.backend.resources.limits.memory }}"
+              cpu: "{{ .Values.backend.resources.limits.cpu }}"
+      restartPolicy: Always

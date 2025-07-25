@@ -10,11 +10,54 @@ frontend:
   containerPort: 80
   servicePort: 80
   serviceType: NodePort
-  nodePort: 31080
+  nodePort: 30080
   resources:
     requests:
       memory: "28Mi"
       cpu: "25m"
     limits:
       memory: "156Mi"
-      cpu: "150"
+      cpu: "150m"
+
+backend:
+  name: backend
+  tier: web
+  replicas: 1
+  image: aks-backend
+  tag: v1.0.0
+  imagePullPolicy: IfNotPresent
+  containerPort: 8000
+  resources:
+    requests:
+      memory: "28Mi"
+      cpu: "25m"
+    limits:
+      memory: "156Mi"
+      cpu: "150m"
+
+mongodb:
+  name: mongodb
+  tier: web
+  replicas: 1
+  image: mongo
+  tag: 6.0
+  containerPort: 27017
+  serviceType: NodePort
+  servicePort: 27017
+  targetPort: 27017
+  nodePort: 31000
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "25m"
+    limits:
+      memory: "256Mi"
+      cpu: "150m"
+  volumes:
+    name: mongo-data
+  readinessProbe:
+    port: 27017
+  pvc:
+    name: mongo-data
+    accessMode: ReadWriteOnce
+    storage: 100Mi

@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.mongodb.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.mongodb.name }}
+    tier: {{ .Values.mongodb.tier }}
+    environment: {{ .Values.environment }}
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.mongodb.name }}
+      tier: {{ .Values.mongodb.tier }}
+      environment: {{ .Values.environment }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.mongodb.name }}
+        tier: {{ .Values.mongodb.tier }}
+        environment: {{ .Values.environment }}
+    spec:
+      containers:
+        - image: "{{ .Values.mongodb.image}}:{{ .Values.mongodb.tag }}"
+          name: {{ .Values.mongodb.name }}
+          ports:
+            - containerPort: {{ .Values.mongodb.containerPort }}
+              protocol: TCP
+          resources:
+            requests:
+              memory: "{{ .Values.mongodb.resources.requests.memory }}"
+              cpu: "{{ .Values.mongodb.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.mongodb.resources.limits.memory }}"
+              cpu: "{{ .Values.mongodb.resources.limits.cpu }}"
+          volumeMounts:
+            - mountPath: /data/db
+              name: {{ .Values.mongodb.volumes.name }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.mongodb.readinessProbe.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.mongodb.readinessProbe.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 30
+
+      restartPolicy: Always
+      volumes:
+        - name: {{ .Values.mongodb.volumes.name }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.mongodb.volumes.name }}
