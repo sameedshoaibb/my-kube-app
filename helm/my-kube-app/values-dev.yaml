@@ -27,6 +27,9 @@ backend:
   tag: v1.0.0
   imagePullPolicy: IfNotPresent
   containerPort: 8000
+  servicePort: 8000
+  serviceType: NodePort
+  nodePort: 30090
   resources:
     requests:
       memory: "28Mi"

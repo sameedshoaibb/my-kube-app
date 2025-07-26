@@ -6,14 +6,14 @@ metadata:
   labels:
     app: {{ .Values.backend.name }}
     tier: {{ .Values.backend.tier }}
-    environment: {{ .Values.backend.environment }}
+    environment: {{ .Values.environment }}
 spec:
   type: {{ .Values.backend.serviceType }} 
   selector:
     app: {{ .Values.backend.name }}
     tier: {{ .Values.backend.tier }}
-    environment: {{ .Values.backend.environment }}
+    environment: {{ .Values.environment }}
   ports:
-    - port: {{ .Values.frontend.servicePort }}
-      targetPort: {{ .Values.frontend.targetPort }}
-      nodePort: {{ .Values.frontend.nodePort }}
+    - port: {{ .Values.backend.servicePort }}
+      targetPort: {{ .Values.backend.targetPort }}
+      nodePort: {{ .Values.backend.nodePort }}
