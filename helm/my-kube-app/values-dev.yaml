@@ -24,7 +24,7 @@ backend:
   tier: web
   replicas: 1
   image: aks-backend
-  tag: v1.0.0
+  tag: v1.0.1
   imagePullPolicy: IfNotPresent
   containerPort: 8000
   servicePort: 8000
@@ -64,3 +64,51 @@ mongodb:
     name: mongo-data
     accessMode: ReadWriteOnce
     storage: 100Mi
+
+rabbitmq:
+  name: rabbitmq
+  tier: web
+  replicas: 1
+  image: rabbitmq:3-management
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "150m"
+    limits:
+      memory: "256Mi"
+      cpu: "300m"
+  managementNodePort: 32010
+  amqpNodePort: 32020
+
+redis:
+  name: redis
+  tier: web
+  replicas: 1
+  image: redis:7
+  containerPort: 6379
+  servicePort: 6379
+  nodePort: 31010
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "250m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+
+consumer:
+  name: consumer
+  tier: web
+  replicas: 1
+  image: aks-backend:v1.0.1
+  args:
+    - python
+    - consumer.py
+  rabbitmqUrl: amqp://guest:guest@rabbitmq:5672/
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "100m"
+    limits:
+      memory: "128Mi"
+      cpu: "100m"

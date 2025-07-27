@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.rabbitmq.name }}
+  labels:
+    app: {{ .Values.rabbitmq.name }}
+    tier: {{ .Values.rabbitmq.tier }}
+    environment: {{ .Values.environment }}
+spec:
+  replicas: {{ .Values.rabbitmq.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.rabbitmq.name }}
+      tier: {{ .Values.rabbitmq.tier }}
+      environment: {{ .Values.environment }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.rabbitmq.name }}
+        tier: {{ .Values.rabbitmq.tier }}
+        environment: {{ .Values.environment }}
+    spec:
+      containers:
+        - image: {{ .Values.rabbitmq.image }}
+          name: {{ .Values.rabbitmq.name }}
+          ports:
+            - containerPort: 15672
+              protocol: TCP
+            - containerPort: 5672
+              protocol: TCP
+          resources:
+            requests:
+              memory: "{{ .Values.rabbitmq.resources.requests.memory }}"
+              cpu: "{{ .Values.rabbitmq.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.rabbitmq.resources.limits.memory }}"
+              cpu: "{{ .Values.rabbitmq.resources.limits.cpu }}"
+      restartPolicy: Always

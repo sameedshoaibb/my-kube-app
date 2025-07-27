@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.redis.name }}
+  labels:
+    app: {{ .Values.redis.name }}
+    tier: {{ .Values.redis.tier }}
+    environment: {{ .Values.environment }}
+spec:
+  replicas: {{ .Values.redis.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.redis.name }}
+      tier: {{ .Values.redis.tier }}
+      environment: {{ .Values.environment }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.redis.name }}
+        tier: {{ .Values.redis.tier }}
+        environment: {{ .Values.environment }}
+    spec:
+      containers:
+        - image: {{ .Values.redis.image }}
+          name: {{ .Values.redis.name }}
+          ports:
+            - containerPort: {{ .Values.redis.containerPort }}
+              protocol: TCP
+          resources:
+            requests:
+              memory: "{{ .Values.redis.resources.requests.memory }}"
+              cpu: "{{ .Values.redis.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.redis.resources.limits.memory }}"
+              cpu: "{{ .Values.redis.resources.limits.cpu }}"
+      restartPolicy: Always

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.consumer.name }}
+  labels:
+    app: {{ .Values.consumer.name }}
+    tier: {{ .Values.consumer.tier }}
+    environment: {{ .Values.environment }}
+spec:
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.consumer.name }}
+      tier: {{ .Values.consumer.tier }}
+      environment: {{ .Values.environment }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.consumer.name }}
+        tier: {{ .Values.consumer.tier }}
+        environment: {{ .Values.environment }}
+    spec:
+      containers:
+        - name: {{ .Values.consumer.name }}
+          image: {{ .Values.consumer.image }}
+          args: {{- toYaml .Values.consumer.args | nindent 12 }}
+          env:
+            - name: RABBITMQ_URL
+              value: {{ .Values.consumer.rabbitmqUrl }}
+          resources:
+            requests:
+              memory: "{{ .Values.consumer.resources.requests.memory }}"
+              cpu: "{{ .Values.consumer.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.consumer.resources.limits.memory }}"
+              cpu: "{{ .Values.consumer.resources.limits.cpu }}"
+      restartPolicy: Always
