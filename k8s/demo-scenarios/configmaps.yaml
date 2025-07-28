@@ -39,3 +39,4 @@ spec:
       - name: html
         configMap:
           name: static-html
+          
