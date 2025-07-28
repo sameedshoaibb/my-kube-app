@@ -1,5 +1,5 @@
 apiVersion: scheduling.k8s.io/v1
-kind: PriorityClass
+kind: PriorityCruntime-commandslass
 metadata:
   name: high-priority
 value: 100000

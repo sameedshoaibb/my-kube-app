@@ -439,3 +439,32 @@ HPA keeps your app resilient and cost-effective by automatically scaling pod cou
 🔹 31. What is the difference between preStop and postStart hooks?
     preStop Hook container ko terminate karne se pehle execute hota hai, jabki postStart Hook container start hone ke foran baad execute hota hai.
     preStop cleanup tasks ke liye use hota hai, jabki postStart initialization tasks ke liye.
+
+🔹 32. What is a priorityClass?
+    PriorityClass ek resource hai jo pods ko priority assign karta hai.
+    Ye scheduling decisions mein madad karta hai, especially jab resources limited ho.
+    Higher priority wale pods ko pehle schedule kiya jata hai aur lower priority wale pods ko evict kiya ja sakta hai agar resources kam ho.
+
+🔹 32. Pod Anti-Affinity and Affinity Rules?
+    Pod Affinity:
+    “In pods ko ek hi node pe daalo.”
+    Pod Anti-Affinity:
+    “Ye pods alag nodes pe honi chahiye.”
+    Use case: High availability, resource optimization, or specific node requirements.  
+
+🔹 32. Job vs CronJob?
+    Job:
+    - One-time task
+    - Ensures completion
+    - Can be retried on failure
+
+    CronJob:
+    - Scheduled task
+    - Runs at specified intervals
+    - Uses standard cron syntax
+
+🔹 32.
+
+🔹 32.
+
+🔹 32.

@@ -1,4 +1,4 @@
-# Pod lifecyvcle means from creation to termination. The flows is from pending, running, succeed, termination.
+# Pod lifecycle means from creation to termination. The flows is from pending, running, succeed, termination.
 # By default the restart policy is always.
 # After the restart, the container is recreated, meaning the changes are reverted.
 

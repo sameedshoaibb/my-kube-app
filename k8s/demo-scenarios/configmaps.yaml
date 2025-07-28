@@ -1,0 +1,41 @@
+# Author: Sameed Shoaib
+# Topic:  Configmaps
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: static-html
+data:
+  index.html: |
+    <html>
+      <head><title>ConfigMap Demo</title></head>
+      <body>
+        <h1>Welcome from ConfigMap!</h1>
+        <p>This HTML is served via Kubernetes ConfigMap</p>
+      </body>
+    </html>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-static
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-static
+  template:
+    metadata:
+      labels:
+        app: nginx-static
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html
+        configMap:
+          name: static-html

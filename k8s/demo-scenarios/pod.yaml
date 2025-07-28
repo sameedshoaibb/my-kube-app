@@ -1,4 +1,68 @@
-Pod Anti-Affinity and Affinity Rules
-Pod Termination Grace Period
-preStop Hook
-Job and CronJob
+# Author: Sameed Shoaib
+# Topic:  Job vs CronJob, Init containers, Sidecar containers
+
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: hello
+        image: busybox
+        command: ["echo", "Hello from Kubernetes Job!"]
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello-cron
+spec:
+  schedule: "*/5 * * * *"  # Every 5 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: busybox
+            command: ["echo", "Hello from Kubernetes CronJob!"]
+          restartPolicy: Never
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-demo
+spec:
+  containers:
+  - name: app
+    image: busybox
+    command: ['sh', '-c', 'echo Main app running! && sleep 3600']
+  initContainers:
+  - name: wait-for-redis
+    image: busybox
+    command: ['sh', '-c', 'until nc -z redis 6379; do echo waiting for redis; sleep 2; done;']
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar-demo
+spec:
+  containers:
+  - name: app
+    image: busybox
+    command: ["sh", "-c", "while true; do echo Hello from App >> /var/log/app.log; sleep 2; done"]
+    volumeMounts:
+    - name: logs
+      mountPath: /var/log
+  - name: sidecar
+    image: busybox
+    command: ["sh", "-c", "tail -f /var/log/app.log"]
+    volumeMounts:
+    - name: logs
+      mountPath: /var/log
+  volumes:
+  - name: logs
+    emptyDir: {}
