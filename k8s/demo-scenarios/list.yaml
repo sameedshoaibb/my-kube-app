@@ -1,0 +1,18 @@
+Ingress and IngressClass
+Pod Disruption Budget (PDB)
+Init Containers
+Sidecar Containers
+ConfigMaps
+Secrets
+Pod Anti-Affinity and Affinity Rules
+Node Affinity
+RBAC (Roles and RoleBindings)
+NetworkPolicies
+SecurityContext (Pod and Container level)
+Pod Termination Grace Period
+preStop Hook
+Job and CronJob
+PriorityClass and Pod Preemption
+Custom Resource Definitions (CRDs)
+Kubernetes Metrics Server
+kube-state-metrics

@@ -426,3 +426,16 @@ Haan, agar pod mein toleration defined ho to:
     CRI-O
     (Old) Docker (deprecated from v1.24+)
 
+🔹 29. What is a hpa?
+HPA keeps your app resilient and cost-effective by automatically scaling pod counts based on real resource needs. Perfect for handling traffic spikes and optimizing resource use!
+    Needs Metrics Server installed and working
+    Works with Deployments, ReplicaSets, StatefulSets
+    Scales based on average, not max/min
+
+🔹 30. What is a PDB?
+    PDB (Pod Disruption Budget) ek policy hai jo ensure karta hai ke minimum number of pods hamesha available rahein during voluntary disruptions (e.g., node maintenance).
+    Ye critical applications ke liye uptime guarantee karta hai.
+    
+🔹 31. What is the difference between preStop and postStart hooks?
+    preStop Hook container ko terminate karne se pehle execute hota hai, jabki postStart Hook container start hone ke foran baad execute hota hai.
+    preStop cleanup tasks ke liye use hota hai, jabki postStart initialization tasks ke liye.
