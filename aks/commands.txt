@@ -4,3 +4,23 @@ kubectl config current-context
 kubectl get storageclasses
 k create bs robot-shop
 helm install robot-shop --namespace robot-shop .
+
+
+# it will add a new context to your kubeconfig file
+az aks get-credentials --resource-group sameed-playground --name mytestcluster --overwrite-existing
+
+kubectl config view
+kubectl config get-contexts	
+kubectl config set-context mytestcluster
+
+
+# Push imageto to ACR
+az login
+az acr login --name sameed
+docker tag frontend:v1.0.2 sameed.azurecr.io/frontend:v1.0.2
+docker push sameed.azurecr.io/frontend:v1.0.2
+
+# 
+docker image inspect sameed.azurecr.io/frontend:v1.0.2 --format '{{.Architecture}}'
+kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.nodeInfo.architecture}{"\n"}{end}'
+docker buildx build --platform linux/amd64 -t sameed.azurecr.io/frontend:v1.0.2 --push .

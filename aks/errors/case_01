@@ -1,0 +1,4 @@
+01- Your image was built for ARM64, but your Kubernetes nodes require AMD64 images.
+   This architecture mismatch caused the container to fail at startup.
+
+Sol:   Build Your Image for AMD64 (or Multi-Arch)
