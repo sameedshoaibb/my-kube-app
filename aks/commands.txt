@@ -1,0 +1,6 @@
+az aks get-credentials --resource-group sameed-playground --name myAKSCluster
+kubectl get pods
+kubectl config current-context
+kubectl get storageclasses
+k create bs robot-shop
+helm install robot-shop --namespace robot-shop .
