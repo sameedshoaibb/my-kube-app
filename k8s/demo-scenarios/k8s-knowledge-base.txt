@@ -463,8 +463,9 @@ HPA keeps your app resilient and cost-effective by automatically scaling pod cou
     - Runs at specified intervals
     - Uses standard cron syntax
 
-🔹 32.
+🔹 33. Metrics Server: Resource ka “kitna use ho raha hai” ka live data.
+       kube-state-metrics: Cluster ki “kya halat hai” ka status data.
 
-🔹 32.
+🔹 34.
 
-🔹 32.
+🔹 35.
