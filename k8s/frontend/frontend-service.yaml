@@ -40,3 +40,4 @@ spec:
       targetPort: 80
   loadBalancerSourceRanges:
     - 78.34.132.74/32
+    - 89.0.47.253/32
