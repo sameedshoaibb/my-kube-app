@@ -14,13 +14,21 @@ kubectl config get-contexts
 kubectl config set-context mytestcluster
 
 
-# Push imageto to ACR
+# Push image to to ACR
 az login
 az acr login --name sameed
 docker tag frontend:v1.0.2 sameed.azurecr.io/frontend:v1.0.2
 docker push sameed.azurecr.io/frontend:v1.0.2
 
-# 
-docker image inspect sameed.azurecr.io/frontend:v1.0.2 --format '{{.Architecture}}'
+# docker image inspect sameed.azurecr.io/frontend:v1.0.2 --format '{{.Architecture}}'
 kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.nodeInfo.architecture}{"\n"}{end}'
-docker buildx build --platform linux/amd64 -t sameed.azurecr.io/frontend:v1.0.2 --push .
+docker buildx build --platform linux/amd64 -t sameed.azurecr.io/frontend:v1.0.4 --push .
+
+
+# Restart deployment
+k rollout restart deployment/frontend 
+
+
+# Install nginx ingress controller to fwd traffic from frontend to backend
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
