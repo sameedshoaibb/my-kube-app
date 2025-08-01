@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: sameed.azurecr.io/frontend:v1.0.3
+          image: sameed.azurecr.io/aks-frontend:v1.0.6
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
