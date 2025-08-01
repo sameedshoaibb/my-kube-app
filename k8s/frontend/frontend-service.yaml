@@ -30,7 +30,7 @@ metadata:
     tier: web
     environment: dev
 spec:
-  type: LoadBalancer              
+  type: ClusterIP              
   selector:
     app: frontend
     tier: web
@@ -38,6 +38,3 @@ spec:
   ports:
     - port: 80            
       targetPort: 80
-  loadBalancerSourceRanges:
-    - 78.34.132.74/32
-    - 89.0.47.253/32
