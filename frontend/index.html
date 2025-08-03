@@ -118,7 +118,7 @@
   </div>
 
   <script>
-    const API_BASE = 'http://localhost:30090';
+    const API_BASE = '/users';
 
     // Create user
     document.getElementById('user-form').addEventListener('submit', async (e) => {
@@ -126,7 +126,7 @@
       const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
 
-      const res = await fetch(`${API_BASE}/users/`, {
+      const res = await fetch(`${API_BASE}/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email })
@@ -142,7 +142,7 @@
     document.getElementById('get-user-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const userId = document.getElementById('get-user-id').value;
-      const res = await fetch(`${API_BASE}/users/${userId}`);
+      const res = await fetch(`${API_BASE}/${userId}`);
       const output = document.getElementById('get-result');
 
       if (res.ok) {
@@ -162,7 +162,7 @@
     document.getElementById('delete-user-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const userId = document.getElementById('delete-user-id').value;
-      const res = await fetch(`${API_BASE}/users/${userId}`, {
+      const res = await fetch(`${API_BASE}/${userId}`, {
         method: 'DELETE'
       });
 

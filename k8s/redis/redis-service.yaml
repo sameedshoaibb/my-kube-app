@@ -1,3 +1,24 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   namespace: myapp-dev   
+#   name: redis
+#   labels:
+#     app: redis
+#     tier: web
+#     environment: dev
+# spec:
+#   type: NodePort  
+#   selector:
+#     app: redis
+#     tier: web
+#     environment: dev
+#   ports:
+#     - port: 6379
+#       targetPort: 6379
+#       nodePort: 31010
+
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -8,7 +29,6 @@ metadata:
     tier: web
     environment: dev
 spec:
-  type: NodePort  
   selector:
     app: redis
     tier: web
@@ -16,4 +36,3 @@ spec:
   ports:
     - port: 6379
       targetPort: 6379
-      nodePort: 31010
