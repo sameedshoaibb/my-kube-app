@@ -1,0 +1,147 @@
+Core Terminology
+Repository: All your code/history.
+
+Working Directory: Files you’re editing.
+
+Staging Area: Where you prepare changes before committing.
+
+Commit: Snapshot with unique hash.
+
+HEAD: The current commit reference.
+
+Frequently Asked Interview Questions
+1. Difference between git pull and git fetch:
+pull: Fetches + merges remote changes into local branch.
+
+fetch: Only gets changes; doesn’t merge automatically.
+
+2. Branching and Merging:
+Branching: Separate work (feature/hotfix branches).
+
+Merging: Combines changes.
+
+Fast-forward: Simple move forward.
+
+Three-way: Resolves diverged histories.
+
+3. Merge Conflict:
+Happens when the same lines/files are changed in different branches.
+
+Resolution: Manual edit + git add to mark as resolved.
+
+4. Rebase vs Merge:
+Rebase: Rewrites history by replaying commits; creates a linear history.
+
+Merge: Combines two branches, can create a merge commit.
+
+5. Reset vs Revert:
+Reset: Changes branch pointer (can delete history!).
+
+Revert: Adds a new commit that undoes a previous one (safer for shared branches).
+
+6. Stash:
+Temporarily save (stash) changes you aren’t ready to commit.
+
+git stash to save, git stash apply to restore.
+
+7. Tags:
+Lightweight: Just a pointer.
+
+Annotated: Contains metadata (message, tagger, date).
+
+Useful for versioning/releases.
+
+8. Hooks:
+Scripts that automate actions before/after events (pre-commit, post-receive).
+
+Used in CI/CD to enforce code quality, automate tests, deployments.
+
+9. Submodules:
+Allows including other repositories as directories inside a main repo.
+
+Useful for dependencies, but can add complexity.
+
+10. Git Workflows:
+Gitflow: Feature/release/hotfix branches, strict discipline.
+
+Trunk-based: Everyone commits to main, encourages fast integration.
+
+Forking: Used in open-source/collaborative projects.
+
+11. CI/CD with Git:
+Git events (push, PR, tags) trigger pipelines (build, test, deploy).
+
+12. Cherry-pick:
+Apply a specific commit from one branch to another.
+13. Squash Commits:
+Combine multiple commits into one for cleaner history.  
+14. Git Aliases:
+Shortcuts for common commands (e.g., git co for checkout).
+
+
+1. Git kya hai, aur DevOps me kyun use hota hai?
+Git: Distributed version control system for tracking changes in code.
+DevOps me use: Collaboration, code quality, and CI/CD automation ke liye.
+
+2. Git repository, working directory, staging area, commit—difference explain karo.
+Git repository: Central storage for all code and history.
+Working directory: Local files you’re editing.
+Staging area: Prepares changes before committing.
+Commit: Snapshot of changes with a unique hash.
+
+3. git fetch vs git pull?
+git fetch: Remote changes ko download karta hai, local branch me merge nahi karta.
+git pull: Remote changes ko download aur local branch me merge karta hai.
+
+4. Branching and merging kya hai? Use-cases?
+Branching: Separate work on features or fixes (e.g., feature branches).
+Merging: Combines changes from different branches (e.g., merging feature branch into main).
+
+5. Fast-forward merge vs three-way merge kya hai?
+Fast-forward merge: Simple move forward when no diverging commits.
+Three-way merge: Resolves diverged histories using a common ancestor.   
+
+6. Merge conflict hota hai toh kaise resolve karte ho?
+Merge conflict: Same lines/files changed in different branches.
+Resolution: Manual edit to resolve conflicts, then git add to mark as resolved.
+
+7. Git rebase vs git merge me farq?
+Rebase: Rewrites history by replaying commits; creates a linear history.
+Merge: Combines two branches, can create a merge commit.
+
+8. git reset, git revert, aur git checkout me difference?
+git reset: Changes branch pointer, can delete history (use with caution).
+git revert: Adds a new commit that undoes a previous one (safer for shared branches).
+git checkout: Switches branches or restores files to a specific state.
+
+9. Git stash kya hai aur kab use karte ho?
+Git stash: Temporarily saves changes you aren’t ready to commit.
+
+13. Gitflow vs trunk-based development me difference?
+Gitflow: Structured branching model with feature, release, and hotfix branches.
+Trunk-based: Everyone commits to the main branch, encourages fast integration.
+
+14. Git history ko clean ya squash kaise karte ho?
+Squash commits: Combine multiple commits into one for cleaner history using `git rebase -i`.
+
+17. Merge conflict resolve karne ka process step by step batao.
+1. Identify conflicting files using `git status`.
+2. Open conflicting files and manually resolve conflicts.
+3. Use `git add <file>` to mark conflicts as resolved.
+4. Commit the changes with `git commit`.
+5. Push the resolved changes to the remote repository.
+
+18. Accidentally production branch pe galat commit push ho gaya—undo kaise karoge?
+1. Identify the commit using `git log`.
+2. Use `git revert <commit_hash>` to create a new commit that undoes the changes.
+3. Push the revert commit to the remote repository.
+
+22. Ek shared repo me push access nahi hai, kaise contribute karenge?
+Fork the repository, make changes in your fork, and create a pull request to propose changes to the original repository.
+
+26. Ek commit history ko squash karna hai—kaise karenge?
+1. Use `git rebase -i HEAD~n` (where n is the number of commits to squash).
+2. Mark commits to squash with `s` (squash) in the interactive rebase editor.
+3. Save and exit the editor.
+4. Resolve any conflicts if they arise.
+

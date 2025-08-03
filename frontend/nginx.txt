@@ -1,0 +1,35 @@
+Nginx:
+        1- Revers proxy:
+        2- Load balancing:
+        3- SSL termination:
+        4- Caching:
+        5- Compression:
+        6- Security:
+        7- URL rewriting:
+        8- Static content serving:
+        9- WebSocket support:
+        10- Rate limiting:
+        11- Access control:
+        12- Health checks:
+        13- Custom error pages:
+        14- Logging and monitoring:
+        15- Dynamic configuration:
+        16- Integration with other services:
+
+    event based vs thread based architecture:
+    Thread-based:
+    Har kaam ke liye nayi thread. Easy programming, lekin zyada resources lagte hain.
+
+    Event-based:
+    Sab kaam ek thread me events ki list ke through hota hai. Zyada scalable, thoda tricky code.
+
+    Process:
+    Independent program, apna memory space, apna address space.
+
+    Thread:
+    Process ke andar chota unit, same memory share karta hai.
+    Nginx:
+        1- Event-based architecture use karta hai.
+        2- Ek hi thread me multiple connections handle kar sakta hai.
+        3- Lightweight aur efficient hai, isliye zyada requests handle kar sakta hai.
+    
