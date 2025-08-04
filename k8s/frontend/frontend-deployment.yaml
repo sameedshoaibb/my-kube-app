@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,7 +23,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: sameed.azurecr.io/aks-frontend:v1.0.6
+          image: sameed.azurecr.io/aks-frontend:v1.0.8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80

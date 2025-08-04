@@ -2,3 +2,4 @@
    This architecture mismatch caused the container to fail at startup.
 
 Sol:   Build Your Image for AMD64 (or Multi-Arch)
+docker buildx build --platform linux/amd64 -t sameed.azurecr.io/aks-frontend:v1.0.6 --push .
