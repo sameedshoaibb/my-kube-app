@@ -4,16 +4,15 @@ frontend:
   name: frontend
   tier: web
   replicas: 1
-  image: frontend
-  tag: v1.0.2
+  image: sameed.azurecr.io/aks-frontend
+  tag: v1.0.8
   imagePullPolicy: IfNotPresent
   containerPort: 80
   servicePort: 80
-  serviceType: NodePort
-  nodePort: 30080
+  serviceType: ClusterIP
   resources:
     requests:
-      memory: "28Mi"
+      memory: "128Mi"
       cpu: "25m"
     limits:
       memory: "156Mi"
@@ -23,16 +22,15 @@ backend:
   name: backend
   tier: web
   replicas: 1
-  image: aks-backend
+  image: sameed.azurecr.io/aks-backend
   tag: v1.0.1
   imagePullPolicy: IfNotPresent
   containerPort: 8000
   servicePort: 8000
-  serviceType: NodePort
-  nodePort: 30090
+  serviceType: ClusterIP
   resources:
     requests:
-      memory: "28Mi"
+      memory: "128Mi"
       cpu: "25m"
     limits:
       memory: "156Mi"
@@ -45,10 +43,9 @@ mongodb:
   image: mongo
   tag: 6.0
   containerPort: 27017
-  serviceType: NodePort
+  serviceType: ClusterIP
   servicePort: 27017
   targetPort: 27017
-  nodePort: 31000
   resources:
     requests:
       memory: "128Mi"
@@ -87,7 +84,6 @@ redis:
   image: redis:7
   containerPort: 6379
   servicePort: 6379
-  nodePort: 31010
   resources:
     requests:
       memory: "128Mi"
@@ -100,7 +96,7 @@ consumer:
   name: consumer
   tier: web
   replicas: 1
-  image: aks-backend:v1.0.1
+  image: sameed.azurecr.io/aks-backend:v1.0.1
   args:
     - python
     - consumer.py

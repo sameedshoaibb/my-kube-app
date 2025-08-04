@@ -17,7 +17,7 @@ helm lint payment (Checks the chart for possible issues)
 # Deploy to dev (default)
 helm template myapp-app ./ --namespace myapp-dev -f values-dev.yaml  --debug
 
-helm install my-kube-app ./ --namespace myapp-dev -f values-dev.yaml
+helm install my-kube-app ./ --namespace helm-dev -f values-dev.yaml
 
 # Deploy to prod
 helm install myapp-app ./myapp-app --namespace myapp-prod -f values-prod.yaml
