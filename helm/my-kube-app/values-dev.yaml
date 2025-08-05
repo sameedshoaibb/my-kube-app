@@ -108,3 +108,15 @@ consumer:
     limits:
       memory: "128Mi"
       cpu: "100m"
+
+ingress:
+  name: my-kube-app
+  sslRedirect: "false"
+  useRegex: "true"
+  rewriteTarget: /
+  whitelist: "89.0.47.253/32,78.34.132.74/32"
+  ingressClassName: nginx
+  path: /
+  pathType: Prefix
+  serviceName: frontend
+  servicePort: 80
