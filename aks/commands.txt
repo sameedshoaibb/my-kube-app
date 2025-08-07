@@ -32,7 +32,6 @@ docker buildx build --platform linux/amd64 -t sameed.azurecr.io/frontend:v1.0.4 
 k rollout restart deployment/frontend 
 kubectl rollout undo deployment
 
-
 # Install nginx ingress controller to fwd traffic from frontend to backend
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
