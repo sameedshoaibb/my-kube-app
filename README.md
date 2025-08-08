@@ -4,3 +4,5 @@
 # Architecture Design
 
 
+# Future To do's
+Include Gitops + Github Actions + Scalability 
