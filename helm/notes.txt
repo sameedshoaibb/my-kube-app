@@ -30,3 +30,13 @@ helm install frontend helm/myapp-app --namespace myapp-dev
 
 # To get yaml files for a chart
 helm template myapp-app ./ --namespace myapp-dev -f values-dev.yaml 
+
+# To uninstall a chart
+helm uninstall myapp-app --namespace myapp-dev
+# To list all installed charts
+helm list --namespace myapp-dev
+# To search for charts in a repository
+helm search repo myapp-app      
+# To add a new repository
+helm repo add myapp-repo https://example.com/charts
+
