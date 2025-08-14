@@ -26,6 +26,6 @@ def callback(ch, method, properties, body):
     print("✅ Done processing")
 
 channel.basic_consume(queue='default', on_message_callback=callback, auto_ack=True)
-print("👷 Consumer waiting for messages...")
+print("Consumer waiting for messages...")
 channel.start_consuming()
  
