@@ -39,3 +39,5 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main
 # Docker Build commands:
 docker build -t sameed.azurecr.io/frontend:v1.0.4 .
 docker run -d -p 80:80 sameed.azurecr.io/frontend:v1.0.4
+
+
