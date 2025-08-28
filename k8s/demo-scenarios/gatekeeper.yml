@@ -1,0 +1,45 @@
+# Author: Sameed Shoaib
+# Topic:  Horizontal pod scaler
+
+#Notes: Tum ek Pod banate ho → request API server pe jati hai.
+
+# Gatekeeper admission controller trigger hota hai.
+# Gatekeeper apne CRDs (ConstraintTemplate + Constraint) check karta hai.
+# Agar rule pass → Pod allow ho jata hai.
+# Agar fail → API server error return karta hai aur Pod ban’ti hi nahi.
+
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8sdenytag
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sDenyTag
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8sdenytag
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.containers[_]
+          endswith(container.image, ":latest")
+          msg := sprintf("Image %v uses the :latest tag, which is not allowed.", [container.image])
+        }
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.containers[_]
+          not contains(container.image, ":")
+          msg := sprintf("Image %v has no explicit tag, which is not allowed.", [container.image])
+        }
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sDenyTag
+metadata:
+  name: deny-latest-and-untagged
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]

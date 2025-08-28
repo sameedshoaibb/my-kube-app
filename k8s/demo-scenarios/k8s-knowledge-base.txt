@@ -466,6 +466,12 @@ HPA keeps your app resilient and cost-effective by automatically scaling pod cou
 🔹 33. Metrics Server: Resource ka “kitna use ho raha hai” ka live data.
        kube-state-metrics: Cluster ki “kya halat hai” ka status data.
 
-🔹 34.
+🔹 34. Admission Controller kya hota hai?
+    Kubernetes me admission controllers ek tarah ke checkpoints hote hain jo har request (jaise kubectl apply, kubectl create) ko cluster me allow ya reject karte hain.
+    Jab tum ek pod apply karte ho → request API server tak jati hai → uske baad admission controller check karta hai:
+    Kya ye request rules follow karti hai?
+    Agar haan → allow
+    Agar nahi → reject with error
+    Example: "Pod must have label" rule → agar missing hai to controller reject kar dega.
 
 🔹 35.
