@@ -28,7 +28,7 @@ spec:
           env:
             - name: RABBITMQ_URL
               value: amqp://guest:guest@rabbitmq:5672/
-          image: sameed.azurecr.io/aks-backend:v1.0.1
+          image: mykubelib.azurecr.io/aks-backend:v1.0.6
           name: consumer
           resources:
             requests:

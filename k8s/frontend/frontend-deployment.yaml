@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: sameed.azurecr.io/aks-frontend:v1.0.8
+          image: mykubelib.azurecr.io/aks-frontend:v1.0.6
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80

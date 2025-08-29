@@ -22,7 +22,7 @@ spec:
         environment: dev
     spec:
       containers:
-        - image: sameed.azurecr.io/aks-backend:v1.0.1
+        - image: mykubelib.azurecr.io/aks-backend:v1.0.6
           imagePullPolicy: IfNotPresent
           name: backend
           ports:
