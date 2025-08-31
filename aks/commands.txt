@@ -1,3 +1,4 @@
+# To connect with AKS cluster 
 az aks get-credentials --resource-group sameed-playground --name myAKSCluster
 kubectl get pods
 kubectl config current-context
@@ -25,7 +26,8 @@ docker tag frontend:v1.0.2 sameed.azurecr.io/frontend:v1.0.2
 docker push sameed.azurecr.io/frontend:v1.0.2
 
 # docker image build for AMD64 architecture
-docker buildx build --platform linux/amd64 -t sameed.azurecr.io/frontend:v1.0.4 --push .
+docker buildx build --platform linux/amd64 -t mykubelib.azurecr.io/aks-frontend:v1.0.4 --push .
+docker buildx build --platform linux/amd64 -t mykubelib.azurecr.io/aks-backend:v1.0.6 --push .
 
 
 # Restart deployment

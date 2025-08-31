@@ -4,8 +4,8 @@ frontend:
   name: frontend
   tier: web
   replicas: 1
-  image: sameed.azurecr.io/aks-frontend
-  tag: v1.0.8
+  image: mykubelib.azurecr.io/aks-frontend:v1.0.6
+  tag: v1.0.6
   imagePullPolicy: IfNotPresent
   containerPort: 80
   servicePort: 80
@@ -22,8 +22,8 @@ backend:
   name: backend
   tier: web
   replicas: 1
-  image: sameed.azurecr.io/aks-backend
-  tag: v1.0.1
+  image: mykubelib.azurecr.io/aks-backend
+  tag: v1.0.6
   imagePullPolicy: IfNotPresent
   containerPort: 8000
   servicePort: 8000
@@ -96,7 +96,7 @@ consumer:
   name: consumer
   tier: web
   replicas: 1
-  image: sameed.azurecr.io/aks-backend:v1.0.1
+  image: mykubelib.azurecr.io/aks-backend:v1.0.6
   args:
     - python
     - consumer.py
