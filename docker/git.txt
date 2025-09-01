@@ -1,10 +1,7 @@
 Core Terminology
 Repository: All your code/history.
-
 Working Directory: Files you’re editing.
-
 Staging Area: Where you prepare changes before committing.
-
 Commit: Snapshot with unique hash.
 
 HEAD: The current commit reference.
@@ -17,55 +14,42 @@ fetch: Only gets changes; doesn’t merge automatically.
 
 2. Branching and Merging:
 Branching: Separate work (feature/hotfix branches).
-
 Merging: Combines changes.
-
 Fast-forward: Simple move forward.
-
 Three-way: Resolves diverged histories.
 
 3. Merge Conflict:
 Happens when the same lines/files are changed in different branches.
-
 Resolution: Manual edit + git add to mark as resolved.
 
 4. Rebase vs Merge:
 Rebase: Rewrites history by replaying commits; creates a linear history.
-
 Merge: Combines two branches, can create a merge commit.
 
 5. Reset vs Revert:
 Reset: Changes branch pointer (can delete history!).
-
 Revert: Adds a new commit that undoes a previous one (safer for shared branches).
 
 6. Stash:
 Temporarily save (stash) changes you aren’t ready to commit.
-
 git stash to save, git stash apply to restore.
 
 7. Tags:
 Lightweight: Just a pointer.
-
 Annotated: Contains metadata (message, tagger, date).
-
 Useful for versioning/releases.
 
 8. Hooks:
 Scripts that automate actions before/after events (pre-commit, post-receive).
-
 Used in CI/CD to enforce code quality, automate tests, deployments.
 
 9. Submodules:
 Allows including other repositories as directories inside a main repo.
-
 Useful for dependencies, but can add complexity.
 
 10. Git Workflows:
 Gitflow: Feature/release/hotfix branches, strict discipline.
-
 Trunk-based: Everyone commits to main, encourages fast integration.
-
 Forking: Used in open-source/collaborative projects.
 
 11. CI/CD with Git:
