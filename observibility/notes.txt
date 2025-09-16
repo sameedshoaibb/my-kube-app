@@ -1,0 +1,36 @@
+# Observibility:
+
+What is Observability?
+
+Observability means:
+👉 “Can we understand what’s happening inside our system just by looking at the data it produces?”
+
+It’s like when a doctor checks your blood test, X-ray, and heartbeat → without opening your body, he knows what’s going on inside.
+
+For computer systems, observability helps us:
+See problems quickly
+Understand why they happen
+Decide how to fix and improve things
+
+🔑 The 3 Pillars of Observability
+Metrics → Numbers that show system health.
+Example: CPU %, memory use, request speed, error count.
+Like “body temperature” for your system.
+
+Logs → Text messages about what happened.
+Example: “User logged in”, “Payment failed”.
+Like a diary of events.
+
+Traces → The journey of a request through the system.
+Example: “Login request went from frontend → backend → database”.
+Helps spot where things slow down or break.
+
+Prometheus: A popular open-source monitoring and alerting toolkit designed for reliability and scalability. It collects and stores metrics as time series data, providing powerful querying capabilities and visualization options.
+
+Node Exporter: A Prometheus exporter for hardware and OS metrics exposed by *nix kernels, written in Go. It allows you to monitor the performance of your servers and virtual machines. (Infra metrics)
+
+Kube State Metrics: A service that listens to the Kubernetes API server and generates metrics about the state of the objects. It provides insights into the health and performance of your Kubernetes clusters. (Kubernetes metrics)
+
+Metric server: A cluster-wide aggregator of resource usage data. It collects metrics from the kubelets and exposes them in Kubernetes apiserver for use by the Horizontal Pod Autoscaler and the kubectl top command. (Application related metrics)
+
+Prometheus scraps data from various sources, including custom application metrics, node exporters, and kube state metrics.  It is storing the the data in time series database. Promql has a http server using it we can query the data through Promql.

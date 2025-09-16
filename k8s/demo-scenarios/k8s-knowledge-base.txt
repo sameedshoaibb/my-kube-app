@@ -35,21 +35,13 @@ Worker Node Components:
     Controller Manager cluster ke state ko maintain karta hai. Ye controllers ko manage karta hai jo pods, replica sets, etc. ki lifecycle ko monitor karte hain.   
 🔹 8. K8s mein Pod kya hai?
     Pod Kubernetes ka smallest deployable unit hai. Ye ek ya zyada containers ko group karta hai jo same network namespace share karte hain. Pods ko scale kiya ja sakta hai aur ye ephemeral hote hain.
+    
 🔹 9. ReplicaSet aur Deployment mein kya difference hai?
     ReplicaSet: Ensure karta hai ke fixed number of pod replicas run ho rahe hoon.
     Deployment: Ye ReplicaSet ko manage karta hai aur rolling updates, rollbacks jaise features provide karta hai.      
 
 🔹 10. Service kya hai Kubernetes mein?
     Service ek abstraction hai jo pods ke group ko expose karta hai. Ye stable endpoint provide karta hai taake clients easily pods se connect kar saken, chahe pods ka lifecycle change ho.
-🔹 7. Kubernetes pod crash ho jaye to kya hota hai? 
-    Agar pod crash ho jaye aur restartPolicy: Always ho, to Kubernetes automatically us pod ko dobara start kar deta hai — mostly via ReplicaSet.
-
-
-🔹 9. Kubernetes mein container kaise start hota hai?
-    User kubectl se deploy karta hai.
-    API Server request leta hai.
-    Scheduler node choose karta hai.
-    Kubelet pod config ke mutabiq container ko start karta hai via runtime (e.g., containerd).
 
 🔹 11. Kya tumne rolling update implement kiya hai? Kaise rollback karte ho?
     Haan, Kubernetes mein Deployment rolling updates default strategy hai.
@@ -473,5 +465,15 @@ HPA keeps your app resilient and cost-effective by automatically scaling pod cou
     Agar haan → allow
     Agar nahi → reject with error
     Example: "Pod must have label" rule → agar missing hai to controller reject kar dega.
+
+🔹 35. Kubernetes pod crash ho jaye to kya hota hai? 
+    Agar pod crash ho jaye aur restartPolicy: Always ho, to Kubernetes automatically us pod ko dobara start kar deta hai — mostly via ReplicaSet.
+
+
+🔹 36. Kubernetes mein container kaise start hota hai?
+    User kubectl se deploy karta hai.
+    API Server request leta hai.
+    Scheduler node choose karta hai.
+    Kubelet pod config ke mutabiq container ko start karta hai via runtime (e.g., containerd).
 
 🔹 35.
