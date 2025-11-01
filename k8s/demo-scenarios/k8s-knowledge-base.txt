@@ -476,4 +476,21 @@ HPA keeps your app resilient and cost-effective by automatically scaling pod cou
     Scheduler node choose karta hai.
     Kubelet pod config ke mutabiq container ko start karta hai via runtime (e.g., containerd).
 
-🔹 35.
+🔹 37.PriorityClass ka matlab hai “yeh pod kitna important hai.”
+    Jab cluster full ho jaata hai, Kubernetes high priority pods ko zyada importance deta hai, aur low priority wale pods ko hata deta hai.
+    
+    ConfigMap ek jagah hai jahan tum apni app ki settings store karte ho.
+    Jaise environment variables ya configuration values.
+    Iska fayda ye hai ke agar config badalni ho, to container ko rebuild karne ki zarurat nahi — bas ConfigMap update kar do.
+
+🔹 38.Pod Disruption Budget ek rule hai jo kehta hai:
+    “Ek waqt me mere itne se zyada pods band mat karo.”
+    Ye ensure karta hai ke rolling update ya node maintenance ke dauraan app hamesha available rahe.
+
+🔹 39.Kya hota hai QoS?
+    QoS class ek priority level hoti hai jo Kubernetes har pod ko deti hai, ye decide karta hai ke agar cluster me resource kam pad jayein (CPU/Memory),to kaunsa pod pehle delete ya throttle hoga.
+    Pod QoS ek tarah ka priority system hai Kubernetes me.
+    Jab system pe load badhta hai,
+    Guaranteed pods ko sabse zyada protection milti hai,
+    Burstable pods ko beech me rakha jata hai,
+    aur BestEffort pods sabse pehle delete ho jaate hain.
